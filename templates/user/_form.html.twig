@@ -1,0 +1,33 @@
+{{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+
+<div class="col-md-6">
+    {{ form_label(form.email) }}
+    {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="col-md-6">
+    {{ form_label(form.password) }}
+    {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="col-md-6">
+    {{ form_label(form.firstName) }}
+    {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="col-md-6">
+    {{ form_label(form.lastName) }}
+    {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="col-md-6">
+    {{ form_label(form.role) }}
+    {{ form_widget(form.role, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="col-12 mt-3">
+    <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    <a href="{{ path('app_user_index') }}" class="btn btn-secondary">Back</a>
+</div>
+
+{{ form_end(form) }}

@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create New Order{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 bg-dark text-light">
+        <div class="card-header bg-secondary text-white">
+            <h3 class="mb-0">📝 Create New Order</h3>
+        </div>
+        <div class="card-body">
+            {{ form_start(form, {'attr': {'id': 'orderForm'}}) }}
+
+            {# Order Status #}
+            <div class="mb-3">
+                {{ form_row(form.status) }}
+            </div>
+
+            {# Order Items Container with prototype #}
+            <div id="order-items-container" data-prototype="{{ form_widget(form.orderItems.vars.prototype)|e('html_attr') }}">
+                {% for orderItem in form.orderItems %}
+                    <div class="order-item mb-3 p-2 border rounded">
+                        {{ form_row(orderItem.product, {'attr': {'class': 'form-select bg-dark text-light border-light'}}) }}
+                        {{ form_row(orderItem.quantity, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button type="button" id="add-order-item" class="btn btn-sm btn-secondary mb-3">
+                + Add Product
+            </button>
+
+            {# Total Price #}
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-light">Total Price</label>
+                <input type="text" id="totalPrice" class="form-control bg-dark text-light border-light" readonly>
+            </div>
+
+            {# Submit Button #}
+            <div class="text-end mt-4">
+                <button type="submit" class="btn btn-success px-4 py-2 fw-bold shadow-sm">💾 Save Order</button>
+                <a href="{{ path('app_order_index') }}" class="btn btn-outline-light px-4 py-2 ms-2">← Back to List</a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const container = document.getElementById('order-items-container');
+    const addButton = document.getElementById('add-order-item');
+    const totalPriceInput = document.getElementById('totalPrice');
+
+    function calculateTotal() {
+        let total = 0;
+        container.querySelectorAll('.order-item').forEach(itemDiv => {
+            const productSelect = itemDiv.querySelector('select');
+            const quantityInput = itemDiv.querySelector('input');
+            const price = parseFloat(productSelect.selectedOptions[0]?.dataset.price || 0);
+            const qty = parseInt(quantityInput.value) || 1;
+            total += price * qty;
+        });
+        totalPriceInput.value = total.toFixed(2);
+    }
+
+    function addOrderItem() {
+        const prototype = container.dataset.prototype;
+        const index = container.querySelectorAll('.order-item').length;
+        const newForm = prototype.replace(/__name__/g, index);
+        const div = document.createElement('div');
+        div.classList.add('order-item', 'mb-3', 'p-2', 'border', 'rounded');
+        div.innerHTML = newForm;
+        container.appendChild(div);
+        calculateTotal(); // recalc after adding new item
+    }
+
+    // Event listeners
+    addButton.addEventListener('click', addOrderItem);
+    container.addEventListener('change', calculateTotal); // product selection change
+    container.addEventListener('input', calculateTotal);  // quantity change
+
+    calculateTotal(); // initial calculation
+});
+</script>
+{% endblock %}

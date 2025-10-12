@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Dashboard{% endblock %}</title>
+
+    {# Bootstrap CSS #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    {# Custom CSS #}
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2 class="logo">AVENNTA</h2>
+            <nav>
+                {# Products (main page) #}
+                <a href="{{ path('app_product_index') }}"
+                   class="{% if app.request.attributes.get('_route') starts with 'app_product' %}active{% endif %}">
+                   Products
+                </a>
+
+                {# Categories #}
+                <a href="{{ path('app_category_index') }}"
+                   class="{% if app.request.attributes.get('_route') starts with 'app_category' %}active{% endif %}">
+                   Categories
+                </a>
+
+                {# Users #}
+                <a href="{{ path('app_user_index') }}"
+                   class="{% if app.request.attributes.get('_route') starts with 'app_user' %}active{% endif %}">
+                   Users
+                </a>
+
+                {# Placeholders (safe, no errors) #}
+                <a href="{{ path('app_order_index') }}"
+   class="{% if app.request.attributes.get('_route') starts with 'app_order' %}active{% endif %}">
+   Orders
+</a>
+
+                <a href="#" class="disabled">Reviews</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar">
+                <h1>{% block page_title %}{% endblock %}</h1>
+                <div class="profile">
+                    <span class="user">👤 Admin</span>
+                </div>
+            </header>
+
+            <section class="content">
+                {% block body %}{% endblock %}
+            </section>
+        </main>
+    </div>
+
+    {# Bootstrap JS (bundle includes Popper) #}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

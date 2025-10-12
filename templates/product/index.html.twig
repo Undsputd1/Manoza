@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Products{% endblock %}
+{% block page_title %}Product List{% endblock %}
+
+{% block body %}
+<div class="product-container">
+    {% if products is not empty %}
+        <div class="product-grid">
+            {% for product in products %}
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x200.png?text=Product+Image" alt="{{ product.name }}" class="product-img">
+
+                    <div class="product-info">
+                        <h3 class="product-name">{{ product.name }}</h3>
+                        <p><strong>Item:</strong> {{ product.item }}</p>
+                        <p><strong>Price:</strong> ₱{{ product.price }}</p>
+                        <p><strong>Stock:</strong> {{ product.stock }}</p>
+                        <p><strong>Ordering:</strong> {{ product.ordering }}</p>
+                        <p><strong>Reviews:</strong> {{ product.reviews }}</p>
+                        <p><strong>Category:</strong> {{ product.category ? product.category.name : 'No Category' }}</p>
+                    </div>
+
+                    <div class="product-actions">
+                        <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn-show">Show</a>
+                        <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn-edit">Edit</a>
+                        {{ include('product/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-products">No products found.</p>
+    {% endif %}
+</div>
+
+<a href="{{ path('app_product_new') }}" class="btn-create">+ Add New Product</a>
+
+<style>
+/* === Layout === */
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+.product-container {
+    padding: 2rem;
+}
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* === Card Style === */
+.product-card {
+    background: #1e1e1e;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(0, 128, 255, 0.4);
+}
+
+/* === Image === */
+.product-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background: #2a2a2a;
+}
+
+/* === Text === */
+.product-info {
+    padding: 1rem;
+}
+.product-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4da6ff;
+    margin-bottom: 0.5rem;
+}
+.product-info p {
+    margin: 0.25rem 0;
+    color: #ccc;
+}
+
+/* === Buttons === */
+.product-actions {
+    padding: 0.8rem 1rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+.btn-show, .btn-edit {
+    text-decoration: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    color: white;
+    font-weight: 500;
+    transition: background 0.2s ease;
+}
+.btn-show { background-color: #007bff; }
+.btn-edit { background-color: #28a745; }
+.btn-show:hover { background-color: #0056b3; }
+.btn-edit:hover { background-color: #1c7c31; }
+
+.btn-create {
+    display: inline-block;
+    margin-top: 1.5rem;
+    background-color: #4da6ff;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+.btn-create:hover {
+    background-color: #007bff;
+}
+
+/* === Empty State === */
+.no-products {
+    text-align: center;
+    color: #999;
+    margin-top: 2rem;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AVENNTA - Mountaineering & Snow Climbing Gear{% endblock %}
+
+{% block body %}
+<!-- HERO SECTION -->
+<section class="hero-section position-relative text-white" style="background: url('https://i.imgur.com/7FiOoiZ.png') center/cover no-repeat; height: 90vh;">
+    <div class="container h-100 d-flex flex-column justify-content-center align-items-start">
+        <h1 class="display-3 fw-bold mb-3" style="text-shadow: 2px 2px 6px rgba(0,0,0,0.6);">
+            Gear Up for the Peaks
+        </h1>
+        <p class="lead mb-4" style="text-shadow: 1px 1px 4px rgba(0,0,0,0.6);">
+            Premium mountaineering & snow climbing gear for every adventurer.
+        </p>
+        <a href="#featured-products" class="btn btn-primary btn-lg fw-bold shadow-lg">
+            Shop Now
+        </a>
+    </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section id="featured-products" class="py-5 bg-dark text-white">
+    <div class="container">
+        <h2 class="text-center mb-5">Featured Products</h2>
+        <div class="row g-4">
+            {% for product in featuredProducts %}
+                <div class="col-md-4 col-sm-6">
+                    <div class="card bg-secondary text-white shadow-sm h-100">
+                        <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">₱{{ product.price }}</p>
+                            <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-outline-light mt-auto">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-center">No products available.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- WHY CHOOSE AVENNTA -->
+<section class="py-5 text-dark" style="background-color: #f8f9fa;">
+    <div class="container">
+        <h2 class="text-center mb-5">Why Choose AVENNTA?</h2>
+        <div class="row text-center g-4">
+            <div class="col-md-4">
+                <i class="bi bi-shield-check display-4 mb-3 text-primary"></i>
+                <h5 class="fw-bold">Durable Gear</h5>
+                <p>High-quality, long-lasting equipment tested in extreme conditions.</p>
+            </div>
+            <div class="col-md-4">
+                <i class="bi bi-people-fill display-4 mb-3 text-primary"></i>
+                <h5 class="fw-bold">Expert Tested</h5>
+                <p>Gear approved by professional mountaineers for safety and reliability.</p>
+            </div>
+            <div class="col-md-4">
+                <i class="bi bi-truck display-4 mb-3 text-primary"></i>
+                <h5 class="fw-bold">Fast Shipping</h5>
+                <p>Get your gear delivered quickly, anywhere in the country.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CALL TO ACTION -->
+<section class="py-5 text-white" style="background: url('https://i.imgur.com/6gVurJG.png') center/cover no-repeat;">
+    <div class="container text-center">
+        <h2 class="display-5 fw-bold mb-3 text-shadow">Ready for Your Next Adventure?</h2>
+        <p class="mb-4 text-shadow">Browse our latest gear and conquer the peaks with confidence.</p>
+        <a href="#featured-products" class="btn btn-primary btn-lg fw-bold shadow-lg">
+            Shop Now
+        </a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-4 bg-dark text-white">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+        <p class="mb-2 mb-md-0">&copy; {{ "now"|date("Y") }} AVENNTA. All rights reserved.</p>
+        <div>
+            <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="text-white me-3"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-twitter"></i></a>
+        </div>
+    </div>
+</footer>
+
+<style>
+.text-shadow {
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+}
+.hero-section .btn:hover {
+    transform: scale(1.05);
+    transition: 0.3s ease-in-out;
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product Details{% endblock %}
+{% block page_title %}Product Details{% endblock %}
+
+{% block body %}
+<div class="product-card">
+    <img src="{{ asset('images/placeholder.png') }}" alt="{{ product.name }}">
+    
+    <h3>{{ product.name }}</h3>
+    
+    <div class="price">₱{{ product.price }}</div>
+    <p>Category: {{ product.category ? product.category.name : 'None' }}</p>
+    <p>Stock: {{ product.stock }}</p>
+
+    <div class="action-buttons">
+        <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn-edit">Edit</a>
+        <form method="post" action="{{ path('app_product_delete', {'id': product.id}) }}" 
+              onsubmit="return confirm('Are you sure?');" style="display:inline;">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+            <button class="btn-delete">Delete</button>
+        </form>
+        <a href="{{ path('app_product_index') }}" class="btn-back">Back</a>
+    </div>
+</div>
+{% endblock %}
