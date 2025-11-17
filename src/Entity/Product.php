@@ -39,6 +39,10 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $reviews = null;
 
+    // NEW property for image URL
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
     /**
      * @var Collection<int, OrderItem>
      */
@@ -65,6 +69,10 @@ class Product
     public function setStock(float $stock): static { $this->stock = $stock; return $this; }
     public function getReviews(): ?string { return $this->reviews; }
     public function setReviews(string $reviews): static { $this->reviews = $reviews; return $this; }
+
+    // Getter and setter for image
+    public function getImage(): ?string { return $this->image; }
+    public function setImage(?string $image): static { $this->image = $image; return $this; }
 
     /**
      * @return Collection<int, OrderItem>

@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <!-- Dashboard Stats -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-box-seam me-2"></i>Products</h5>
+                    <p class="card-text fs-4">{{ productsCount|default(0) }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-people me-2"></i>Users</h5>
+                    <p class="card-text fs-4">{{ usersCount|default(0) }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-cart-check me-2"></i>Orders</h5>
+                    <p class="card-text fs-4">{{ ordersCount|default(0) }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-danger shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-star me-2"></i>Reviews</h5>
+                    <p class="card-text fs-4">{{ reviewsCount|default(0) }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Orders Table -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Recent Orders</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="ordersTable" class="table table-striped table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Total Price</th>
+                            <th>Status</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in recentOrders %}
+                            <tr>
+                                <td>{{ order.id }}</td>
+                                <td>{{ order.user ? order.user.username : '—' }}</td>
+                                <td>₱{{ order.totalPrice|default('0.00') }}</td>
+                                <td>{{ order.status|capitalize }}</td>
+                                <td>{{ order.createdAt ? order.createdAt|date('Y-m-d H:i') : '—' }}</td>
+                                <td>
+                                    <a href="{{ path('app_order_show', {'id': order.id}) }}" class="btn btn-sm btn-primary">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ path('app_order_edit', {'id': order.id}) }}" class="btn btn-sm btn-warning text-white">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-3">No orders found.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {# jQuery + DataTables CDN #}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    {# DataTables Bootstrap 5 CSS #}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"/>
+
+    <script>
+        $(document).ready(function () {
+            $('#ordersTable').DataTable({
+                "pageLength": 5,
+                "lengthMenu": [5, 10, 25, 50],
+                "order": [[0, "desc"]],
+                "language": {
+                    "search": "Search:",
+                    "lengthMenu": "Show _MENU_ entries",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ orders",
+                    "paginate": {
+                        "first": "First",
+                        "last": "Last",
+                        "next": "Next",
+                        "previous": "Prev"
+                    },
+                    "emptyTable": "No data available"
+                }
+            });
+        });
+    </script>
+{% endblock %}

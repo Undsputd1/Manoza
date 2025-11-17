@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Order{% endblock %}
+{% block title %}Edit Product{% endblock %}
 
 {% block body %}
 <div class="container mt-5">
@@ -8,19 +8,38 @@
     <div class="col-md-8">
       <div class="card shadow-lg border-0 rounded-4">
         <div class="card-header bg-warning text-dark text-center py-3">
-          <h3 class="mb-0">✏️ Edit Order</h3>
+          <h3 class="mb-0">✏️ Edit Product</h3>
         </div>
         <div class="card-body p-4">
-          {{ form_start(form) }}
-            {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
+          {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+            {{ form_row(form.name) }}
+            {{ form_row(form.item) }}
+            {{ form_row(form.price) }}
+            {{ form_row(form.stock) }}
+            {{ form_row(form.ordering) }}
+            {{ form_row(form.reviews) }}
+            {{ form_row(form.category) }}
+            {{ form_row(form.image) }} {# <-- corrected field name #}
+
+            {% if product.image %}
+              <div class="text-center mt-3">
+                <p>Current image:</p>
+                <img src="{{ asset('uploads/' ~ product.image) }}" 
+                     alt="{{ product.name }}" 
+                     width="150" 
+                     class="img-thumbnail shadow-sm">
+              </div>
+            {% endif %}
+
             <div class="mt-4 text-center">
-              <button class="btn btn-primary px-4 py-2">💾 Update</button>
-              <a href="{{ path('app_order_index') }}" class="btn btn-secondary px-4 py-2">↩ Back</a>
+              <button class="btn btn-primary px-4 py-2">💾 Update Product</button>
+              <a href="{{ path('app_product_index') }}" class="btn btn-secondary px-4 py-2">↩ Back</a>
             </div>
           {{ form_end(form) }}
 
           <div class="mt-3 text-center">
-            {{ include('order/_delete_form.html.twig') }}
+            {{ include('product/_delete_form.html.twig') }}
           </div>
         </div>
       </div>

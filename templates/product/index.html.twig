@@ -9,12 +9,25 @@
         <div class="product-grid">
             {% for product in products %}
                 <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200.png?text=Product+Image" alt="{{ product.name }}" class="product-img">
+                    {# Show product image if uploaded, else fallback placeholder #}
+                    {% if product.image %}
+                        <img 
+                            src="{{ asset('uploads/' ~ product.image) }}" 
+                            alt="{{ product.name }}" 
+                            class="product-img"
+                        >
+                    {% else %}
+                        <img 
+                            src="https://via.placeholder.com/300x200.png?text=No+Image" 
+                            alt="No Image" 
+                            class="product-img"
+                        >
+                    {% endif %}
 
                     <div class="product-info">
                         <h3 class="product-name">{{ product.name }}</h3>
                         <p><strong>Item:</strong> {{ product.item }}</p>
-                        <p><strong>Price:</strong> ₱{{ product.price }}</p>
+                        <p><strong>Price:</strong> ₱{{ product.price|number_format(2, '.', ',') }}</p>
                         <p><strong>Stock:</strong> {{ product.stock }}</p>
                         <p><strong>Ordering:</strong> {{ product.ordering }}</p>
                         <p><strong>Reviews:</strong> {{ product.reviews }}</p>
@@ -22,8 +35,8 @@
                     </div>
 
                     <div class="product-actions">
-                        <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn-show">Show</a>
-                        <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn-edit">Edit</a>
+                        <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn-show">👁 Show</a>
+                        <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn-edit">✏️ Edit</a>
                         {{ include('product/_delete_form.html.twig') }}
                     </div>
                 </div>
@@ -34,7 +47,9 @@
     {% endif %}
 </div>
 
-<a href="{{ path('app_product_new') }}" class="btn-create">+ Add New Product</a>
+<div class="text-center mt-4">
+    <a href="{{ path('app_product_new') }}" class="btn-create">➕ Add New Product</a>
+</div>
 
 <style>
 /* === Layout === */
@@ -109,12 +124,12 @@ body {
 
 .btn-create {
     display: inline-block;
-    margin-top: 1.5rem;
     background-color: #4da6ff;
     color: white;
     padding: 0.6rem 1.2rem;
     border-radius: 8px;
     text-decoration: none;
+    font-weight: 500;
     transition: background 0.2s ease;
 }
 .btn-create:hover {
